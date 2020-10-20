@@ -1,0 +1,22 @@
+version: '2.2'
+services:
+    
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.6.1
+    container_name: logstash
+    volumes:
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash.conf:/usr/share/logstash/config/logstash.conf
+    command: logstash -f /usr/share/logstash/config/logstash.conf
+    ports:
+     - "5044:5044"
+    networks:
+      - elastic
+     
+    environment:
+      xpack.monitoring.elasticsearch.url: http://localhost:9200
+
+
+networks:
+  elastic:
+    driver: bridge
